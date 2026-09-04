@@ -1401,3 +1401,9 @@ Dikerjakan:
 - `memory/test_credentials.md` diisi (admin, 5 role, klienmaklon, cmtvendor).
 Verifikasi curl: generate → id/nomor = AR (INV-MKL-2026-0001), qty 60 (received, bukan 100), total 799.200 = 720.000×1,11; payment 100k → AR amount_paid 100k & dewi partial_paid; delete payment → issued; cancel → AR draft, 0 dewi doc, mirror partial_delivered; regenerate → 200 id/nomor sama; cancel lagi bersih.
 - Iter 106 testing agent: 64/64 backend PASS (test_iter105 46 + test_iter106 18), UI/portal regression bersih. Tindak lanjut LOW: `GET /api/doc-number-policy?key=dewi_maklon_invoices.invoice_number` kini mengisi {PREFIX} dari config `maklon_invoice_prefix` (pratinjau "INV-MKL-2026-000x", bukan "PRE-2026-0001"). Sisa LOW belum dikerjakan: input login portal klien (/klien-maklon) belum punya data-testid.
+
+## Session log — Iter 107 (2026-09-04): AUDIT Portal Finance & Akunting (temuan saja, tanpa eksekusi)
+- Laporan: `memory/AUDIT_FINANCE_AKUNTING_2026-09-04.md` — 6 CRITICAL, 10 HIGH, 9 MED, 5 LOW + daftar yang terbukti aman + urutan perbaikan.
+- Alat audit ulang: `backend/scripts/audit_finance_integrity.py` (read-only) & `backend/scripts/audit_finance_live.py` (transaksi uji + cleanup).
+- Temuan utama: subledger AR/AP dibuka di akun anak & ditutup di kontrol (C-01); AP-dari-GR ke 6-2200 Listrik & Air + AP dobel (C-02); biaya jahit CMT dobel & FG negatif (C-03); Neraca tak seimbang krn tipe CURRENT_ASSET/OTHER (C-04); profil asset_disposal salah akun (C-05); pendapatan/pembayaran maklon tidak ke GL (C-06).
+- DB dikembalikan bersih (8 JE seed, po-mk-demo-2 partial_delivered, AR draft).
